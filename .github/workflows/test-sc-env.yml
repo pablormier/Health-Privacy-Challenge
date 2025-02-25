@@ -1,0 +1,68 @@
+name: Test Environment with Micromamba
+
+on:
+  push:
+    paths:
+      - sc_environment.yaml
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v3
+
+      - name: Set up micromamba environment
+        uses: mamba-org/setup-micromamba@v2
+        with:
+          environment-file: sc_environment.yaml
+          init-shell: >-
+            bash
+            powershell
+          cache-environment: true
+          post-cleanup: 'all'
+
+      - name: Test imports and versions (bash)
+        shell: bash -el {0}
+        run: |
+          micromamba-shell bash <<'EOF'
+          python - <<PYTHON
+          import numpy; print("numpy", numpy.__version__)
+          import scipy; print("scipy", scipy.__version__)
+          import pandas; print("pandas", pandas.__version__)
+          import torch; print("torch", torch.__version__)
+          import sklearn; print("scikit-learn", sklearn.__version__)
+          import umap; print("umap-learn", umap.__version__)
+          import seaborn; print("seaborn", seaborn.__version__)
+          import statsmodels; print("statsmodels", statsmodels.__version__)
+          import h5py; print("h5py", h5py.__version__)
+          import scanpy; print("scanpy", scanpy.__version__)
+          import anndata; print("anndata", anndata.__version__)
+          import celltypist; print("celltypist", celltypist.__version__)
+          import leidenalg; print("leidenalg", leidenalg.version)
+          import matplotlib; print("matplotlib", matplotlib.__version__)
+          try:
+              import louvain
+              print("louvain imported", louvain.__version__)
+          except ImportError:
+              print("louvain not found")
+          import yaml; print("PyYAML", yaml.__version__)
+          # You may also want to test pip-installed packages, for example:
+          try:
+              import scib
+              print("scib imported", scib.__version__)
+          except ImportError:
+              print("scib not found")
+          try:
+              import domias
+              print("domias imported")
+          except ImportError:
+              print("domias not found")
+          try:
+              import ctgan
+              print("ctgan imported", ctgan.__version__)
+          except ImportError:
+              print("ctgan not found")
+          PYTHON
+          EOF
