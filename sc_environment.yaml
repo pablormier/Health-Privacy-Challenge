@@ -15,15 +15,15 @@ dependencies:
   - h5py=3.12.1
   - tqdm=4.67.1
   - pip=24.3.1
+  - scanpy==1.10.1
+  - anndata==0.10.9
+  - celltypist==1.6.3
+  - leidenalg==0.10.2
+  - matplotlib==3.9.4
+  - louvain==0.8.2
+  - PyYAML
   - pip:
-      - scanpy==1.10.1
-      - anndata==0.10.9
-      - celltypist==1.6.3
-      - leidenalg==0.10.2
-      - matplotlib==3.9.4
       - git+https://github.com/theislab/scib.git
+      - domias
       - scib-metrics==0.5.1
-      - louvain==0.8.2
       - ctgan
-      - domias 
-      - PyYAML
