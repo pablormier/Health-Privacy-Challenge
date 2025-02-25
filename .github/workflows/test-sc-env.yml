@@ -4,10 +4,22 @@ on:
   push:
     paths:
       - sc_environment.yaml
+  workflow_dispatch:
+    inputs:
+      os:
+        description: 'Select operating system'
+        required: false
+        default: 'ubuntu-latest'
+        type: choice
+        options:
+          - ubuntu-latest
+          - macos-latest
 
 jobs:
   build:
-    runs-on: ${{ matrix.os }}
+    # When manually triggered, use the provided input.
+    # When triggered by push, the input will be null so you can use your matrix.
+    runs-on: ${{ github.event.inputs.os || matrix.os }}
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest]
