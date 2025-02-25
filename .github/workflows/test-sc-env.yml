@@ -7,7 +7,10 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
 
     steps:
       - name: Check out repository
@@ -48,7 +51,6 @@ jobs:
           except ImportError:
               print("louvain not found")
           import yaml; print("PyYAML", yaml.__version__)
-          # You may also want to test pip-installed packages, for example:
           try:
               import scib
               print("scib imported", scib.__version__)
