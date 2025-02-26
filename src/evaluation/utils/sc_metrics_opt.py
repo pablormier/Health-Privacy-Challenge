@@ -18,7 +18,7 @@ from scib.metrics import ilisi_graph
 import celltypist
 from scipy.sparse import issparse
 
-_DEF_N_HVGS = 120
+_DEF_N_HVGS = 5000
 
 def filter_low_quality_cells_and_genes(adata, min_counts=10, min_cells=3):
     """
@@ -131,7 +131,6 @@ class Statistics:
             synth_vec = get_dense_column(synth_hvg, i)
             corr, _ = stats.spearmanr(real_vec, synth_vec, nan_policy='omit')
             scc_values.append(corr)
-            # Print progress every 10%
             if (i + 1) % progress_interval == 0 or (i + 1) == total_genes:
                 percent = ((i + 1) / total_genes) * 100
                 print(f"    Processed {i + 1} / {total_genes} genes ({percent:.0f}%)")
